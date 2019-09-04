@@ -1,0 +1,87 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Preguntas Frecuentes{% endblock %}
+{% block content %}
+    <main id="ts-main">
+        <!--PAGE TITLE
+            =========================================================================================================-->
+        <section id="page-title">
+            <div class="container">
+
+                <div class="ts-title d-flex justify-content-between">
+                    <h1>Preguntas frecuentes</h1>
+                    <a href="{% url 'contact' %}" class="mb-0 text-right">
+                        <small>Tienes alguna pregunta?</small>
+                        <h4 class="mb-0">Contactanos</h4>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!--FAQ AND SIDEBAR
+            =========================================================================================================-->
+        <section id="items-grid-and-sidebar">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!--FAQS
+                            =========================================================================================-->
+                        <section class="faqs">
+
+                            <!--FAQ-->
+                            <article class="ts-faq" id="p1">
+                                <h5>¿A qué hora empieza y a qué hora termina La Noche de los Museos de Montevideo?</h5>
+                                <p>La Noche de los Museos suele realizarse en la Ciudad de Montevideo todos los años entre 
+                                los meses de octubre y noviembre de 20h a 3h de la mañana en todos los museos participantes. 
+                                En 2016 La Noche de Los Museos será el 29 de octubre.
+                                Podés conocer los museos participantes acá:
+                                </p>
+                            </article>
+
+                            <!--FAQ-->
+                            <article class="ts-faq" id="p2">
+
+                                <h5>¿Hay que anotarse en algún lugar o sacar una entrada anticipada? </h5>
+                                <p>
+                                    No hay que anotarse en ningún lugar ni sacar entradas anticipadas excepto para aquellos 
+                                    espectáculos que así lo requieran por razones de capacidad como obras de teatro en espacios 
+                                    cerrados, conciertos, etc. en cualquier caso las entradas son gratuitas.
+                                </p>
+                            </article>
+
+                            <!--FAQ-->
+                            <article class="ts-faq" id="p3">
+                                <h5>¿Es totalmente gratuito o hay algunas cosas que son pagas?</h5>
+                                <p>
+                                    La Noche de los Museos de Montevideo es totalmente gratuita y abierta a todo tipo de público.
+                                </p>
+                            </article>
+
+                            <article class="ts-faq" id="p4">
+                                <h5>¿Cómo elijo el recorrido que quiero hacer?</h5>
+                                <p>
+                                    No hay un recorrido establecido previamente. Las personas que participan pueden elegir 
+                                    libremente los museos que quieren recorrer y de qué manera hacerlo.
+                                </p>
+                            </article>
+
+                            <article class="ts-faq" id="p5">
+                                <h5>¿Qué transportes son gratuitos el día de La Noche de los Museos?</h5>
+                                <p>
+                                    Los participantes de La Noche de los Museos tienen acceso a un pase libre  mediante el cual podrán acceder a transporte gratuito. Todas las piezas gráficas de La Noche de los Museos incluyen dicho pase libre que deberán presentar cada vez que utilicen la línea de transportes elegida (dentro de las líneas habilitadas). El pase libre también podrá imprimirse directamente desde la página web de La Noche de Los Museos:
+                                    ► www.lanochedelosmuseos.com.uy
+                                </p>
+                            </article>
+
+                        </section>
+                    </div>
+                    <!--end Right Side / col-md-8-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end container-->
+        </section>
+        <!--end #items-list-->
+    </main>
+    <!--end #ts-main-->
+{% endblock %}

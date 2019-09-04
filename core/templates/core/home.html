@@ -1,0 +1,196 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Inicio{% endblock %}
+{% block content %}
+ <!-- HERO SLIDER
+    =================================================================================================================-->
+    <section id="ts-hero" class="ts-separate-bg-element mb-0" data-bg-color="#fff" data-bg-image-opacity=".5" style="padding-top: 174px;background-color:#FFF;
+    background-image: url({% static 'core/img/gif_museos2018.gif' %});
+    background-position: right;margin-top:50px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: unset;">
+
+        <!--Container-->
+        <div class="container text-dark py-5">
+            <div class="row ts-center__both ts-h__auto ts-min-h__40vh">
+                <!-- LEFT SIDE (TITLE)
+                =====================================================================================================-->
+                <div class="col-sm-6 col-md-8">
+                    <!--Title
+                    <h1 class="mb-2">Arm&aacute; tu recorrido</h1>!-->
+                    <!--Subtitle-->
+                    <!--<h4 class="ts-opacity__50">Tenemos miles de recorridos para vos</h4>-->
+                    <!--More properties button-->
+                </div>
+                
+                <!-- RIGHT SIDE (FORM)
+                =====================================================================================================-->
+                <div class="col-sm-12 col-md-4">
+
+                    <!--Form-->
+                    <form class="ts-form py-3 px-4 ts-border-radius__md ts-shadow__md form-home" data-bg-color="rgba(255,255,255,.9)" action="{% url 'museos:museos' %}">
+
+                        <!--Keyword-->
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="keyword" name="address" placeholder="Direccion" {% if address %} value="{{address}}" {% endif %}  >
+                        </div>
+
+                        <!--BARRIO-->
+                        <div class="form-group">
+                            <select class="custom-select" id="type" name="district">
+                                <option value="">Todos los Barrios</option>
+                                <option value="AGUADA" >Aguada</option>
+                                <option value="AIRES PUROS" >Aires Puros</option>
+                                <option value="BARRIO SUR" >Barrio Sur</option>
+                                <option value="BUCEO" >Buceo</option>
+                                <option value="CARRASCO" >Carrasco</option>
+                                <option value="CENTRO" >Centro</option>
+                                <option value="CERRO" >Cerro</option>
+                                <option value="CIUDAD VIEJA" >Ciudad Vieja</option>
+                                <option value="CORDON" >Cordon</option>
+                                <option value="BARRIO CAPURRO" >Barrio Capurro</option>
+                                <option value="LA UNION" >La union</option>
+                                <option value="LEZICA" >Lezica</option>
+                                <option value="MARONAS"  >Maroñas</option>
+                                <option value="PALERMO" >Palermo</option>
+                                <option value="PARQUE RODO" >Parque rodo</option>
+                                <option value="PENAROL"  >Penarol</option>
+                                <option value="PEREZ CASTELLANOS" >Pérez Castellanos</option>
+                                <option value="POCITOS" >Pocitos</option>
+                                <option value="PUNTA GORDA" >Punta Gorda</option>
+                                <option value="PUNTA CARRETAS" >Punta Carretas</option>
+                                <option value="SAYAGO" >Sayago</option>
+                                <option value="TRES CRUCES" >Tres Cruces</option>
+                            </select>
+                        </div>
+
+                        <!--COLECCIONES-->
+                        <div class="form-group">
+                            <select class="custom-select" id="type" name="colection">
+                                <option value="">Todas las colecciones</option>
+                                <option value="ARTE">Arte</option>
+                                <option value="HISTORIA" >Historia</option>
+                                <option value="ARQUEOLOGIA" >Arqueologia</option>
+                                <option value="ANTROPOLOGIA">Antropologia</option>
+                                <option value="CIENCIA" >Ciencia</option>
+                                <option value="AGRICULTURA" >Agricultura</option>
+                            </select>
+                        </div>
+                           
+                        <a href="#more-options-collapse" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="more-options-collapse">
+                                <i class="fa fa-plus-circle ts-text-color-primary mr-2"></i>
+                                Mas opciones
+                            </a>
+    
+                            <!--Hidden Form-->
+                            <div class="collapse" id="more-options-collapse">
+    
+                                <!--Padding-->
+                                <div class="py-4">
+    
+                                
+                                    <!--end row-->
+    
+                                    <!--Checkboxes-->
+                                    <div id="features-checkboxes" class="w-100">
+    
+                                        <div class="ts-column-count-2">
+
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="ch_1" name="accesibilty" value="1" >
+                                                <label class="custom-control-label" for="ch_1">Accesibilidad</label>
+                                            </div>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="ch_2" name="wifi" value="1"  >
+                                                <label class="custom-control-label" for="ch_2">Wi-Fi</label>
+                                            </div>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="ch_3" name="coffee" value="1" >
+                                                <label class="custom-control-label" for="ch_3">Cafeteria</label>
+                                            </div>
+                                        </div>
+                                        <!--end ts-column-count-3-->
+    
+                                    </div>
+                                    <!--end #features-checkboxes-->
+    
+                                </div>
+                                <!--end Padding-->
+                            </div>
+                            <!--end more-options-collapse-->
+                        <!--Type
+                        <select class="custom-select my-2" id="type" name="type">
+                            <option value="">Museo</option>
+                            <option value="1">Recorrido</option>
+                        </select>-->
+
+                        <!--Submit button-->
+                        <div class="form-group my-2">
+                            <button type="submit" class="btn btn-primary w-100" id="search-btn">Buscar</button>
+                        </div>
+
+                    </form>
+                  </div>
+            </div>
+            <!--end row-->
+        </div>
+        <!--end container-->
+    </section>
+    <!--end ts-hero-->
+
+    <!--*********************************************************************************************************-->
+    <!-- MAIN ***************************************************************************************************-->
+    <!--*********************************************************************************************************-->
+
+    <main id="ts-main">
+        
+        <div class="row">
+            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-2 ARTE"  style="padding: 0;text-align: center;">            
+                    <img src="{% static 'core/img/arte.png' %}" alt="Arte">
+                    <h6 class="title-categorias"><a href="museos/?colection=ARTE">Arte</a></h6>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-2 HISTORIA"  style="padding: 0;text-align: center;">            
+                    <img src="{% static 'core/img/historia.png' %}" alt="Historia">
+                    <h6 class="title-categorias"><a href="museos/?colection=HISTORIA">Historia</a></h6>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-2 ARQUEOLOGIA"  style="padding: 0;text-align: center;">            
+                    <img src="{% static 'core/img/arqueologia.png' %}" alt="Arqueologia">
+                    <h6 class="title-categorias"><a href="museos/?colection=ARQUEOLOGIA">Arqueologia</a></h6>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-2 ANTROPOLOGIA"  style="padding: 0;text-align: center;">            
+                    <img src="{% static 'core/img/antropologia.png' %}" alt="Antropologia">
+                    <h6 class="title-categorias"><a href="museos/?colection=ANTROPOLOGIA">Antropologia</a></h6>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-2 CIENCIA"  style="padding: 0;text-align: center;">            
+                    <img src="{% static 'core/img/ciencia.png' %}" alt="Ciencia">
+                    <h6 class="title-categorias"><a href="museos/?colection=CIENCIA">Ciencia</a></h6>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-2 AGRICULTURA"  style="padding: 0;text-align: center;">            
+                    <img src="{% static 'core/img/agricultura.png' %}" alt="Agricultura">
+                    <h6 class="title-categorias"><a href="museos/?colection=AGRICULTURA">Agricultura</a></h6>
+            </div>
+        </div>
+
+
+
+        <section id="partners" class="ts-block pt-4 pb-0" styl>
+            <div class="container">
+                <div class="d-block d-md-flex justify-content-between align-items-center text-center ts-partners py-3">
+                    <a href="#">
+                        <img src="{% static 'core/img/logo-01.png' %}" alt="">
+                    </a>
+                    <a href="#">
+                        <img src="{% static 'core/img/logo-02.png' %}" alt="">
+                    </a>
+                    <a href="#">
+                        <img src="{% static 'core/img/logo-03.png' %}" alt="">
+                    </a>
+                    <a href="#">
+                        <img src="{% static 'core/img/logo-04.png' %}" alt="">
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}

@@ -1,0 +1,183 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}{{museo.title}}{% endblock %}
+{% block content %}
+{% include 'museos/includes/museos_menu.html' %}
+<main id="ts-main">
+    <section id="page-title">
+        <div class="container">
+
+            <div class="d-block d-sm-flex justify-content-between">
+                <div class="ts-title mb-0">
+                    <h1>{{museo.title}}</h1><br>
+                    <h5 class="ts-opacity__90" style="font-size: 20px">
+                        <i class="fa fa-map-marker text-primary"></i>
+                        {{museo.address}} │  {{museo.district|title}}
+                    </h5>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section id="gallery-carousel" {% if not museo.photo1 and not museo.photo2 and not museo.photo3  %} class="hidden" {% endif %} >
+
+        <div class="owl-carousel ts-gallery-carousel ts-gallery-carousel__multi" data-owl-dots="1" data-owl-items="3" data-owl-center="1" data-owl-loop="1" >
+
+            {% if museo.photo1 != '' %}
+            <div class="slide">
+                <div class="ts-image" data-bg-image="{% get_media_prefix %}{{museo.photo1}}" style="background-size: cover;">
+                </div>
+            </div>
+            {% endif %}
+
+            {% if museo.photo2 != '' %}
+            <div class="slide">
+                <div class="ts-image" data-bg-image="{% get_media_prefix %}{{museo.photo2}}" style="background-size: cover;">
+                </div>
+            </div>
+            {% endif %}
+
+            {% if museo.photo3 != '' %}
+            <div class="slide">
+                <div class="ts-image" data-bg-image="{% get_media_prefix %}{{museo.photo3}}" style="background-size: cover;">
+                </div>
+            </div>
+            {% endif %}
+            
+        </div>
+
+    </section>
+    <section id="content">
+        <div class="container">
+            <div class="row flex-wrap-reverse museo-item" data-address="{{museo.address}}, {{museo.district|title }}" data-title="{{museo.title}}" data-target="{% url 'museos:museo' museo.id museo.title|slugify %}">
+                <!-- Lateral izquierdo -->
+                <div class="col-md-5 col-lg-4">
+                    <section id="location">
+                        <div class="ts-box">
+                            <dl class="ts-description-list__line mb-0">
+                                <dt><i class="fa fa-map-marker ts-opacity__30 mr-2"></i>Dirección:</dt>
+                                <dd class="border-bottom pb-2" ><a href="https://maps.google.com/?q={{museo.address}}" target="_blank">{{museo.address}}</a></dd>
+                                {% if museo.email %}
+                                <dt><i class="fas fa-envelope ts-opacity__30 mr-2"></i>Email:</dt>
+                                <dd class="border-bottom pb-2"><a href="mailto:{{museo.email}}">{{museo.email}}</a></dd>
+                                {% endif %}
+                                {% if museo.telephone %}
+                                <dt><i class="fas fa-phone ts-opacity__30 mr-2"></i>Teléfono:</dt>
+                                <dd class="border-bottom pb-2"><a href="tel:{{museo.telephone}}">{{museo.telephone}}</a></dd>
+                                {% endif %}
+                                {% if museo.web %}
+                                <dt><i class="fas fa-link ts-opacity__30 mr-2"></i>Página Web:</dt>
+                                <dd class="border-bottom pb-2"><a href="{{museo.web}}" target="_blank">Ir al Sitio</a></dd>
+                                {% endif %}
+                                {% if museo.opening_hour or museo.close_our %}
+                                <dt><i class="fa fa-clock ts-opacity__30 mr-2"></i>Horarios</dt>
+                                <dd class=""><b>{{museo.opening_hour}}</b> a <b>{{museo.close_hour}} hs</b> </dd>
+                                {% endif %}
+                            </dl>
+                        </div>
+                    </section>
+                        <!-- Section inferior -->
+                      
+                    <section id="location">
+                        <div class="cualquiercosa">
+                               
+                            <div id="accordion">
+                                {% for activitie in museo.activities.all %}
+                              
+                                    <div class="card">
+                                        <div class="card-header" id="heading{{activitie.id}}">
+                                            <h5 class="mb-0">
+                                            <i class="fa fa-star" style="color:#1f409b;font-size: 20px;"></i>
+                                            <button class="btn btn-default" style="box-shadow:none;background: #f7f7f7;" data-toggle="collapse" data-target="#collapse{{activitie.id}}" aria-expanded="true" aria-controls="collapse{{activitie.id}}">
+                                                <b>{{activitie.title}}</b>
+                                            </button>
+                                            </h5>
+                                        </div>
+                                    
+                                        <div id="collapse{{activitie.id}}" class="collapse" aria-labelledby="heading{{activitie.id}}" data-parent="#accordion">
+                                                
+                                            <div class="card-body">
+                                                    {% if activitie.opening_hour %}
+                                                    <dl>
+                                                        <dt><i class="fa fa-clock mr-2"></i>
+                                                            {{activitie.opening_hour}} a {{activitie.close_hour}} hs</dt>
+                                                    </dl>
+                                                    {% endif %} 
+                                                    {% if activitie.accesibilty %}
+                                                    <dl>
+                                                        <dt><i class="fa fa-wheelchair mr-2"></i>Accesibilidad</dt>
+                                                    </dl>   
+                                                    {% endif %} 
+                                                {{activitie.content|safe}}
+                                            </div>
+                                        </div>
+                                        </div>
+                                {% endfor %}
+                        </div>
+                    </div>
+                    </section>
+                </div>
+               <!-- Lateral derecho -->
+                <div class="col-md-7 col-lg-8">
+                    {% if museo.content %}
+                    <section id="description">
+                       
+                        <h3>Descripci&oacute;n</h3>
+
+                        <p>
+                            {{museo.content|safe}}
+                        </p>
+                    </section>
+                    {% endif %} 
+                    
+                    
+                    <section id="features" {% if not museo.accesibilty and not museo.wifi and not museo.coffee  %} class="hidden" {% endif %} >
+
+                        <h3>Detalles</h3>
+
+                        <ul class="list-unstyled ts-list-icons ts-column-count-4 ts-column-count-sm-2 ts-column-count-md-2">
+                            {% if museo.accesibilty %}
+                            <li>
+                                <i class="fa fa-wheelchair"></i>
+                                Accesibilidad
+                            </li>
+                            {% endif %} 
+                            
+                            
+                            {% if museo.wifi %}
+                            <li>
+                                <i class="fa fa-wifi"></i>
+                                Wi-Fi
+                            </li>
+                            {% endif %} 
+                            
+                            {% if museo.coffee %}
+                            <li>
+                                <i class="fa fa-utensils"></i>
+                                Restaurant
+                            </li>
+                            {% endif %} 
+                            
+                            
+                            
+                        </ul>
+
+                    </section>
+                    <!-- Mapa -->
+                    <section id="map-location">
+                            <h3>Mapa</h3>
+                            <div id="map" style="height: 400px"></div>
+                    </section>
+                </div>
+                <!--end col-md-8-->
+
+            </div>
+            <!--end row-->
+        </div>
+        <!--end container-->
+    </section>
+
+</main>
+<script src="{% static 'core/js/mapa-museo.js' %}"></script>
+{% endblock %}

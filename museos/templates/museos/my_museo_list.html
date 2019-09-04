@@ -1,0 +1,152 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Mi museo{% endblock %}
+{% block content %}
+{% include 'museos/includes/museos_menu.html' %}
+<main role="main" id="ts-main">
+  <div class="container mb-4">
+    <div class="container ">
+      <div class="row ">
+        <div class="col-md-8">
+            
+                {% if not museo_list %}
+                {% if request.user.is_staff %}
+                    <h3>No tienes museos cargados</h3>
+                    <a class="btn btn-primary" href="{% url 'museos:create' %}"><i>Crear Museo</i></a>
+                {% else %} 
+                <h3>No hay resultados</h3>
+                {% endif %} 
+            {% endif %} 
+          
+            <section id="ts-items-list">
+                {% for museo in museo_list %}
+                <div class="card ts-item ts-item__list ts-card museos-item" data-address="{{museo.address}}, {{museo.district|title }}" data-title="{{museo.title}}" data-target="{% url 'museos:museo' museo.id museo.title|slugify %}">
+                    
+                     <!--Favoritos
+                    <div class="ts-ribbon">
+                        <i class="fa fa-star"></i>
+                    </div>-->
+
+                    <!--Coleccion-->
+                    <div class="ts-ribbon-corner ">
+                        <span class="{{museo.colection}}">{{museo.colection}}</span>
+                    </div>
+
+                    <!--Imagenes-->
+                    {% if museo.photo1 != '' %}
+                        <a href="{% url 'museos:museo' museo.id museo.title|slugify %}" class="card-img" data-bg-image="{% get_media_prefix %}{{museo.photo1}}" style="background-image: url({% get_media_prefix %}{{museo.photo1}});"></a>
+                    {% else %}
+                        {% if museo.photo2 != '' %}
+                            <a href="{% url 'museos:museo' museo.id museo.title|slugify %}" class="card-img" data-bg-image="{% get_media_prefix %}{{museo.photo2}}" style="background-image: url({% get_media_prefix %}{{museo.photo2}});"></a>
+                        {% else %}
+                            {% if museo.photo3 != '' %}
+                                <a href="{% url 'museos:museo' museo.id museo.title|slugify %}" class="card-img" data-bg-image="{% get_media_prefix %}{{museo.photo3}}" style="background-image: url({% get_media_prefix %}{{museo.photo3}});"></a>
+                            {% else %}
+                                <a href="{% url 'museos:museo' museo.id museo.title|slugify %}" class="card-img" data-bg-image="{% static 'core/img/noimg.png' %}" style="background-image: url({% static 'core/img/noimg.png' %});"></a>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+
+                    
+                    <!--Card Body-->
+                    <div class="card-body" >
+
+                        <figure class="ts-item__info">
+                            <h4>{{museo.title}}</h4>
+                            <aside style="padding-top:5px;">
+                                <i class="fa fa-map-marker mr-2"></i>
+                                {{museo.address}} - <b> {{museo.district |title }}</b>
+                                <br>
+                                
+                                
+                            </aside>
+                        </figure>
+                        <div class="ts-description-lists">
+                            
+                            {% if museo.accesibilty %}
+                            <dl>
+                                <dt><i class="fa fa-wheelchair mr-2"></i>Accesibilidad</dt>
+                            </dl>   
+                            {% endif %} 
+                            
+                            
+                            {% if museo.wifi %}
+                            <dl>
+                                <dt><i class="fa fa-wifi"></i> Wi-Fi</dt>
+                            </dl>
+                            {% endif %} 
+                            
+                            {% if museo.coffee %}
+                            <dl>
+                                <dt><i class="fa fa-utensils"></i> Cafeteria</dt>
+                            </dl>
+                            {% endif %} 
+                            
+                            
+                            {% if museo.opening_hour %}
+                            <dl>
+                                <dt><i class="fa fa-clock mr-2"></i>
+                                    {{museo.opening_hour}} a {{museo.close_hour}} hs</dt>
+                            </dl>
+                            {% endif %} 
+                            
+                        </div>
+                    </div>
+                    <!--Card Footer-->
+                    <div class="card-footer">
+                        <a href="{% url 'museos:museo' museo.id museo.title|slugify %}" style="padding-right:20px;">
+                            <span class="ts-btn-arrow">Detalles</span>
+                        </a>
+                        {% if request.user.id == museo.author_id %}
+                            <a href="{% url 'museos:update' museo.id %}" style="padding-right:20px;">
+                                <span class="ts-btn-arrow">Editar</span>
+                            </a>
+                            <a href="{% url 'museos:delete' museo.id %}" style="padding-right:20px;">
+                                    <span class="ts-btn-arrow">Borrar</span>
+                            </a>
+                        {% elif request.user.is_superuser %}
+                            <a href="{% url 'museos:update' museo.id %}" style="padding-right:20px;">
+                                <span class="ts-btn-arrow">Editar</span>
+                            </a>
+                            <a href="{% url 'museos:delete' museo.id %}" style="padding-right:20px;">
+                                    <span class="ts-btn-arrow">Borrar</span>
+                            </a>
+                        {% endif %}
+                            
+
+                       <!-- <a href="#" style="padding-right:20px;">
+                            <span class="ts-btn-favoritos">Favorito</span>
+                        </a>-->
+                    </div>
+                    
+                </div>
+          
+    {% endfor %}
+    
+
+    </section>
+    {% if museo_list %}
+    <!--Pagination
+    <section id="pagination">
+            <div class="container">
+    
+                
+                <nav aria-label="Page navigation">
+                    <ul class="pagination ts-center__horizontal">
+                        <li class="page-item active">
+                            <a class="page-link" href="#">1</a>
+                        </li>
+                    </ul>
+                </nav>
+    
+            </div>
+        </section>-->
+    {% endif %} 
+
+    
+  </div>
+  </div>
+</main>
+<script src="{% static 'core/js/mapa-listado.js' %}"></script>
+
+{% endblock %}

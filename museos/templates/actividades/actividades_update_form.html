@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Actualizar actividad{% endblock %}
+{% block content %}
+{% include 'museos/includes/museos_menu.html'%}
+<main role="main"  id="ts-main">
+  <div class="container">
+    <div class="row mt-3 mb-5">
+      <div class="col-md-9 mx-auto">
+        <h3>Ud est&aacute; editando <b>"{{ object }}"</b></h3>
+
+          {% if 'ok' in request.GET %}
+            <p style="color:green;">
+            Actividad editada correctamente.
+            </p>
+            {% endif %}
+            <form action="" method="post">{% csrf_token %}
+                    {{ form.as_p }}
+                <div class="text-center">
+                  <input type="submit" class="btn btn-primary btn-block" value="Actualizar actividad" />
+                </div>
+            </form>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

@@ -1,0 +1,322 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Listado de museos {% endblock %}
+{% block content %}
+{% include 'museos/includes/museos_menu.html' %}
+<main role="main" id="ts-main">
+  <div class="container mb-4">
+    <div class="container ">
+      <div class="row ">
+        <div class="col-md-4 navbar-expand-md">
+            <button class="btn bg-white mb-4 w-100 d-block d-md-none" type="button" data-toggle="collapse" data-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="float-left">
+                        <i class="fa fa-search mr-2"></i>
+                        Redefinir b&uacute;squeda
+                    </span>
+                <span class="float-right">
+                        <i class="fa fa-plus small ts-opacity__30"></i>
+                    </span>
+            </button>
+
+            <aside id="sidebar" class="ts-sidebar collapse navbar-collapse">
+
+                <!--SEARCH FORM
+                    =========================================================================================-->
+                <section id="sidebar-search-form">
+                    {% if address %}
+                    <h3>Resultados para <b>{{address}}</b></h3>
+                    {% endif %} 
+                    {% if not address %}
+                    <h3>Filtrar</h3>
+                    {% endif %} 
+                    <form id="form-search" class="ts-form">
+                        <!--Keyword-->
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="keyword" name="address" placeholder="Direccion" {% if address %} value="{{address}}" {% endif %}  >
+                        </div>
+
+                        {% if orderby %} 
+                        <input type="hidden"  name="orderby" value="{{orderby}}">
+                        {% endif %}
+
+                        
+                        <!--BARRIO-->
+                        <div class="form-group">
+                            <select class="custom-select" id="type" name="district">
+                                <option value="">Todos los Barrios</option>
+                                <option value="AGUADA"  {% if district == 'AGUADA' %} selected {% endif %}>Aguada</option>
+                                <option value="AIRES PUROS"  {% if district == 'AIRES PUROS' %} selected {% endif %}>Aires Puros</option>
+                                <option value="BARRIO SUR"  {% if district == 'BARRIO SUR' %} selected {% endif %}>Barrio Sur</option>
+                                <option value="BUCEO"  {% if district == 'BUCEO' %} selected {% endif %}>Buceo</option>
+                                <option value="CARRASCO"  {% if district == 'CARRASCO' %} selected {% endif %}>Carrasco</option>
+                                <option value="CENTRO"  {% if district == 'CENTRO' %} selected {% endif %}>Centro</option>
+                                <option value="CERRO"  {% if district == 'CERRO' %} selected {% endif %}>Cerro</option>
+                                <option value="CIUDAD VIEJA"  {% if district == 'CIUDAD VIEJA' %} selected {% endif %}>Ciudad Vieja</option>
+                                <option value="CORDON"  {% if district == 'CORDON' %} selected {% endif %}>Cordon</option>
+                                <option value="BARRIO CAPURRO"  {% if district == 'BARRIO CAPURRO' %} selected {% endif %}>Barrio Capurro</option>
+                                <option value="LA UNION"  {% if district == 'LA UNION' %} selected {% endif %}>La union</option>
+                                <option value="LEZICA"  {% if district == 'LEZICA' %} selected {% endif %}>Lezica</option>
+                                <option value="MARONAS"  {% if district == 'MARONAS' %} selected {% endif %}>Maroñas</option>
+                                <option value="PALERMO"  {% if district == 'PALERMO' %} selected {% endif %}>Palermo</option>
+                                <option value="PARQUE RODO"  {% if district == 'PARQUE RODO' %} selected {% endif %}>Parque rodo</option>
+                                <option value="PENAROL"  {% if district == 'PENAROL' %} selected {% endif %}>Penarol</option>
+                                <option value="POCITOS"  {% if district == 'POCITOS' %} selected {% endif %}>Pocitos</option>
+                                <option value="PEREZ CASTELLANOS"  {% if district == 'PEREZ CASTELLANOS' %} selected {% endif %}>Pérez Castellanos</option>
+                                <option value="PUNTA GORDA"  {% if district == 'PUNTA GORDA' %} selected {% endif %}>Punta Gorda</option>
+                                <option value="PUNTA CARRETAS"  {% if district == 'PUNTA CARRETAS' %} selected {% endif %}>Punta Carretas</option>
+                                <option value="SAYAGO"  {% if district == 'SAYAGO' %} selected {% endif %}>Sayago</option>
+                                <option value="TRES CRUCES"  {% if district == 'TRES CRUCES' %} selected {% endif %}>Tres Cruces</option>
+                            </select>
+                        </div>
+
+                        <!--COLECCIONES-->
+                        <div class="form-group">
+                            <select class="custom-select" id="type" name="colection">
+                                <option value="">Todas las colecciones</option>
+                                <option value="ARTE" {% if colection == 'ARTE' %} selected {% endif %}>Arte</option>
+                                <option value="HISTORIA" {% if colection == 'HISTORIA' %} selected {% endif %}>Historia</option>
+                                <option value="ANTROPOLOGIA" {% if colection == 'ANTROPOLOGIA' %} selected {% endif %}>Antropologia</option>
+                                <option value="ARQUEOLOGIA" {% if colection == 'ARQUEOLOGIA' %} selected {% endif %}>Arqueologia</option>
+                                <option value="CIENCIA" {% if colection == 'CIENCIA' %} selected {% endif %}>Ciencia</option>
+                                <option value="AGRICULTURA" {% if colection == 'AGRICULTURA' %} selected {% endif %}>Agricultura</option>
+                                
+                            </select>
+                        </div>
+
+
+                        <!--Submit button-->
+                        <div class="form-group my-2">
+                            <button type="submit" class="btn btn-primary w-100" id="search-btn">Buscar
+                            </button>
+                        </div>
+
+                        <!--More Options Button-->
+                        <a href="#more-options-collapse" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="more-options-collapse">
+                            <i class="fa fa-plus-circle ts-text-color-primary mr-2"></i>
+                            Mas opciones
+                        </a>
+
+                        <!--Hidden Form-->
+                        <div {% if not accesibilty and not wifi and not coffee  %} class="collapse" {% endif %}  id="more-options-collapse" >
+
+                            <!--Padding-->
+                            <div class="py-4">
+
+                            
+                                <!--end row-->
+
+                                <!--Checkboxes-->
+                                <div id="features-checkboxes" class="w-100">
+
+                                    <div class="ts-column-count-2">
+
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="ch_1" name="accesibilty" value="1"  {% if accesibilty %} checked {% endif %}>
+                                            <label class="custom-control-label" for="ch_1">Accesibilidad</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="ch_2" name="wifi" value="1"  {% if wifi %} checked {% endif %}>
+                                            <label class="custom-control-label" for="ch_2">Wi-Fi</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="ch_3" name="coffee" value="1"  {% if coffee %} checked {% endif %}>
+                                            <label class="custom-control-label" for="ch_3">Cafeteria</label>
+                                        </div>
+                                    </div>
+                                    <!--end ts-column-count-3-->
+
+                                </div>
+                                <!--end #features-checkboxes-->
+
+                            </div>
+                            <!--end Padding-->
+                        </div>
+                        <!--end more-options-collapse-->
+
+                    </form>
+                    <!--end #form-search-->
+                </section>
+                <!--end #sidebar-search-form-->
+                
+                {% if museo_list %}
+                <section id="map-results">
+                    <br>
+                    <h3>Resultados en mapa</h3>
+
+                    <div id="map" style="height: 400px"></div>
+
+                </section>
+                {% endif %} 
+            </aside>
+            <!--end #sidebar-->
+        </div>
+        
+        <div class="col-md-8">
+            
+                {% if not museo_list %}
+                {% if request.user.is_staff %}
+                    <h3>No tienes museos cargados</h3>
+                    <a class="btn btn-primary" href="{% url 'museos:create' %}"><i>Crear Museo</i></a>
+                {% else %} 
+                <h3>No hay resultados</h3>
+                {% endif %} 
+            {% endif %} 
+          {% if museo_list %}
+            <section id="display-control" class="clearfix" style="margin-bottom: 20px;">
+
+
+                <!--Display selector on the right-->
+                <div class="float-none float-sm-right pl-2 ts-center__vertical">
+                    <label for="sorting" class="mb-0 mr-2 text-nowrap">Ordenar por:</label>
+                    <select class="custom-select bg-transparent" id="sorting" name="orderby">
+                        <option value="title" {% if orderby == 'title' %} selected {% endif %} >Nombre</option>
+                        <option value="colection" {% if orderby == 'colection' %} selected {% endif %} >Coleccion</option>
+                        <option value="district" {% if orderby == 'district' %} selected {% endif %} >Barrio</option>
+                        <option value="created" {% if orderby == 'created' %} selected {% endif %}>Agregados recientemente</option>
+                    </select>
+                </div>
+
+            </section>
+            {% endif %}
+            <section id="ts-items-list">
+                {% for museo in museo_list %}
+                <div class="card ts-item ts-item__list ts-card museos-item" data-address="{{museo.address}}, {{museo.district|title }}" data-title="{{museo.title}}" data-target="{% url 'museos:museo' museo.id museo.title|slugify %}">
+                    
+                     <!--Favoritos
+                    <div class="ts-ribbon">
+                        <i class="fa fa-star"></i>
+                    </div>-->
+
+                    <!--Coleccion-->
+                    <div class="ts-ribbon-corner ">
+                        <span class="{{museo.colection}}">{{museo.colection}}</span>
+                    </div>
+
+                    <!--Imagenes-->
+                    {% if museo.photo1 != '' %}
+                        <a href="{% url 'museos:museo' museo.id museo.title|slugify %}" class="card-img" data-bg-image="{% get_media_prefix %}{{museo.photo1}}" style="background-image: url({% get_media_prefix %}{{museo.photo1}});"></a>
+                    {% else %}
+                        {% if museo.photo2 != '' %}
+                            <a href="{% url 'museos:museo' museo.id museo.title|slugify %}" class="card-img" data-bg-image="{% get_media_prefix %}{{museo.photo2}}" style="background-image: url({% get_media_prefix %}{{museo.photo2}});"></a>
+                        {% else %}
+                            {% if museo.photo3 != '' %}
+                                <a href="{% url 'museos:museo' museo.id museo.title|slugify %}" class="card-img" data-bg-image="{% get_media_prefix %}{{museo.photo3}}" style="background-image: url({% get_media_prefix %}{{museo.photo3}});"></a>
+                            {% else %}
+                                <a href="{% url 'museos:museo' museo.id museo.title|slugify %}" class="card-img" data-bg-image="{% static 'core/img/noimg.png' %}" style="background-image: url({% static 'core/img/noimg.png' %});"></a>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+
+                    
+                    <!--Card Body-->
+                    <div class="card-body" >
+
+                        <figure class="ts-item__info">
+                            <h4>{{museo.title}}</h4>
+                            <aside style="padding-top:5px;">
+                                <i class="fa fa-map-marker mr-2"></i>
+                                {{museo.address}} - <b> {{museo.district |title }}</b>
+                                <br>
+                                
+                                
+                            </aside>
+                        </figure>
+                        <div class="ts-description-lists">
+                            
+                            {% if museo.accesibilty %}
+                            <dl>
+                                <dt><i class="fa fa-wheelchair mr-2"></i>Accesibilidad</dt>
+                            </dl>   
+                            {% endif %} 
+                            
+                            
+                            {% if museo.wifi %}
+                            <dl>
+                                <dt><i class="fa fa-wifi"></i> Wi-Fi</dt>
+                            </dl>
+                            {% endif %} 
+                            
+                            {% if museo.coffee %}
+                            <dl>
+                                <dt><i class="fa fa-utensils"></i> Cafeteria</dt>
+                            </dl>
+                            {% endif %} 
+                            
+                            
+                            {% if museo.opening_hour %}
+                            <dl>
+                                <dt><i class="fa fa-clock mr-2"></i>
+                                    {{museo.opening_hour}} a {{museo.close_hour}} hs</dt>
+                            </dl>
+                            {% endif %} 
+                            
+                        </div>
+                    </div>
+                    <!--Card Footer-->
+                    <div class="card-footer">
+                        <a href="{% url 'museos:museo' museo.id museo.title|slugify %}" style="padding-right:20px;">
+                            <span class="ts-btn-arrow">Detalles</span>
+                        </a>
+                        {% if request.user.id == museo.author_id %}
+                            <a href="{% url 'museos:update' museo.id %}" style="padding-right:20px;">
+                                <span class="ts-btn-arrow">Editar</span>
+                            </a>
+                            <a href="{% url 'museos:delete' museo.id %}" style="padding-right:20px;">
+                                    <span class="ts-btn-arrow">Borrar</span>
+                            </a>
+                        {% elif request.user.is_superuser %}
+                            <a href="{% url 'museos:update' museo.id %}" style="padding-right:20px;">
+                                <span class="ts-btn-arrow">Editar</span>
+                            </a>
+                            <a href="{% url 'museos:delete' museo.id %}" style="padding-right:20px;">
+                                    <span class="ts-btn-arrow">Borrar</span>
+                            </a>
+                        {% endif %}
+                            
+
+                       <!-- <a href="#" style="padding-right:20px;">
+                            <span class="ts-btn-favoritos">Favorito</span>
+                        </a>-->
+                    </div>
+                    
+                </div>
+          
+    {% endfor %}
+    
+
+    </section>
+   {% if is_paginated %}
+        <nav aria-label="Page navigation">
+          <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+              <li class="page-item ">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">&laquo;</a>
+              </li>
+            {% endif %}
+            {% for i in paginator.page_range %}
+              <li class="page-item {% if page_obj.number == i %}active{% endif %}">
+                <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+              </li>
+            {% endfor %}
+            {% if page_obj.has_next %}
+              <li class="page-item ">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">&raquo;</a>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
+        {% endif %}
+  </div>
+  </div>
+</main>
+<script src="{% static 'core/js/mapa-listado.js' %}"></script>
+
+{% endblock %}

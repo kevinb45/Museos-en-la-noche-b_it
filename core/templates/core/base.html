@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="ThemeStarz">
+
+    <!-- CSSS -->
+    <link rel="stylesheet" href="{% static 'core/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'core/font-awesome/css/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/leaflet.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/style.css' %}">
+    
+    <title>{% block title %}{% endblock %}</title>
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+  <body>
+    <!-- Este if se utiliza para mostrar diferentes tipo de clases porque algunas páginas son 
+    diferentes en diseño -->
+    {% if request.path != "/" %}
+        <div class="ts-page-wrapper ts-has-bokeh-bg" id="page-top">
+    {% else %}
+        <div class="ts-page-wrapper ts-homepage" id="page-top">
+    {% endif %}
+        <!-- Inicio de Encabezado -->
+        <header id="ts-header" class="fixed-top">
+            <nav id="ts-primary-navigation" class="navbar navbar-expand-md navbar-light">
+                <div class="container">
+                    <a class="navbar-brand hidden-xs" href="{% url 'home' %}" >
+                        <img src="{% static 'core/img/logo.png' %}" alt="" width="100px">
+                    </a>
+                    
+                        <a class="navbar-brand visible-xs" href="{% url 'home' %}" >
+
+
+                            <!-- Este if lo que hace es ver si el usuario esta logeado y cambie los directorios -->
+                        {% if not request.user.is_authenticated %}
+                            <a class="nav-link visible-xs bglue" href="{% url 'login' %}">Iniciar Sesión</a>
+                            <a class="nav-link visible-xs bglue" href="{% url 'signup' %}">Registrarse</a>
+                        {% else %} 
+                            <a class="nav-link visible-xs bglue" href="{% url 'profile' %}">Perfil</a>
+                            <!-- Si el usuario es superuser o miembro del staff se le muestra el panel sino no. -->
+                            {% if user.is_superuser or user.is_staff %}
+                                <a class="nav-link visible-xs bglue" href="{% url 'admin:index' %}">Panel</a>
+                            {% endif %}
+                            <a class="nav-link visible-xs bglue" href="{% url 'logout' %}">Salir</a>
+                        {% endif %}
+                        </a>
+
+                    
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarPrimary" aria-controls="navbarPrimary" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarPrimary">
+                        <ul class="navbar-nav">
+                             <li class="nav-item">
+                                <a class="nav-link mr-2" href="{% url 'museos:museos' %}">Museos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link mr-2" href="{% url 'recorridos' %}">Recorridos</a>
+                            </li>
+                            
+                            <li class="nav-item">
+                                <a class="nav-link mr-2" href="{% url 'faq' %}">Preguntas Frecuentes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link mr-2" href="{% url 'contact' %}">Contacto</a>
+                            </li>
+                        </ul>
+
+                        <ul class="navbar-nav ml-auto justify-content-end  hidden-xs">
+                        <!-- Este if lo que hace es ver si el usuario esta logeado que muestre su foto sino que muestre el avatar sin foto -->
+                        {% if request.user.profile.photo %}
+                            <img src="{{request.user.profile.photo.url}}" class="rounded-circle hidden-xs" width="40px" height="40px" >
+                        {% else %}
+                            <img src="{% static 'registration/img/no-avatar.jpg' %}" class="rounded-circle hidden-xs" width="40px" height="40px" >
+                        {% endif %}
+                        <!-- Este if lo que hace es ver si el usuario esta logeado y cambie los directorios -->
+                        {% if not request.user.is_authenticated %}
+                            <li class="nav-item  hidden-xs">
+                                <a class="nav-link" href="{% url 'login' %}">Iniciar Sesión</a>
+                            </li>
+                            <li class="nav-item  hidden-xs">
+                                <a class="nav-link text-dark" href="{% url 'signup' %}">Registrarse</a>
+                            </li>
+                            {% else %}  
+                            <li class="nav-item  hidden-xs">
+                                <a class="nav-link" href="{% url 'profile' %}">Perfil</a>
+                            </li>
+                            
+                                <!-- Si el usuario es superuser o miembro del staff se le muestra el panel sino no. -->
+                                {% if user.is_superuser %}
+                                <li class="nav-item  hidden-xs">
+                                    <a class="nav-link" href="{% url 'admin:index' %}">Panel</a>
+                                </li>
+                                {% elif user.is_staff %} 
+                                 <li class="nav-item  hidden-xs">
+                                    <a class="nav-link" href="{% url 'museos:my' %}">Museo</a>
+                                </li>
+                                {% endif %}
+                               
+                            <li class="nav-item  hidden-xs  ">
+                                <a class="nav-link text-dark" href="{% url 'logout' %}">Salir</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                        <!--end Right navigation-->
+                    </div>
+                    <!--end navbar-collapse-->
+                </div>
+                <!--end container-->
+            </nav>
+            <!--end #ts-primary-navigation.navbar-->
+       </header>
+      <!-- Final de Encabezado -->
+
+        <!-- Contenido -->
+        {% block content %}{% endblock %}
+    
+        <footer id="ts-footer">
+            <section id="ts-footer-main">
+                <div class="container">
+                    <div class="row">
+
+                        <!-- Marca y descripción -->
+                        <div class="col-md-6">
+                            <a href="#" class="brand">
+                                <img src="{% static 'core/img/2.png' %}" alt="" width="400px" class="img-resp">
+                            </a>
+                            <p class="mb-4">
+                                Evento anual de promoción de museos de todo el país.<br>
+                                Tiene como principal objetivo promover e incentivar la accesibilidad, la concurrencia y el disfrute del acervo de los museos. El segundo viernes de diciembre los museos abren sus puertas en un horario que no es el habitual.
+                            </p>
+                            <a href="{% url 'contact' %}" class="btn btn-outline-dark mb-4">Contactar</a>
+                        </div>
+
+                        <!-- Navegación -->
+                        <div class="col-md-2">
+                            <h4>Navegación</h4>
+                            <nav class="nav flex-row flex-md-column mb-4">
+                                <a href="{% url 'home' %}" class="nav-link">Inicio</a>
+                                <a href="{% url 'museos:museos' %}" class="nav-link">Museos</a>
+                                <a href="{% url 'recorridos' %}" class="nav-link">Recorridos</a>
+                                <a href="{% url 'faq' %}" class="nav-link">Preguntas Frecuentes</a>
+                                <a href="{% url 'contact' %}" class="nav-link">Contacto</a>
+                            </nav>
+                        </div>
+
+                        <!-- Información de contacto -->
+                        <div class="col-md-4">
+                            <h4>Contacto</h4>
+                            <address class="ts-text-color-light">
+                                <strong>Email: </strong>
+                                <a href="#" class="btn-link">museosenlanochebit@gmail.com</a>
+                                <br>
+                                <strong>Telefono:</strong>
+                                +123 456 789
+                                <br>
+                                <strong>Skype: </strong>
+                                fu5ion
+                            </address>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+            <section id="ts-footer-secondary">
+                <div class="container">
+                    <div class="ts-copyright">(C) 2019 <a href="{% url 'fu5ion' %}" style="color:blue;">FU5ION</a>. Todos los izquierdos reservados</div>
+                    <div class="ts-footer-nav">
+                        <nav class="nav"> <!-- Esta sección se conecta con el panel administrador donde se modificar los urls de links -->
+                            {% if LINK_FACEBOOK %}
+                            <a href="{{LINK_FACEBOOK}}" class="nav-link">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            {% endif %}
+                            {% if LINK_TWITTER %}
+                            <a href="{{LINK_TWITTER}}" class="nav-link">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            {% endif %}
+                            {% if LINK_PINTEREST %}
+                            <a href="{{LINK_PINTEREST}}" class="nav-link">
+                                <i class="fab fa-pinterest-p"></i>
+                            </a>
+                            {% endif %}
+                            {% if LINK_YOUTUBE %}
+                            <a href="{{LINK_YOUTUBE}}" class="nav-link">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                            {% endif %}
+                        </nav>
+                    </div>
+                </div>
+            </section>
+        </footer>
+    </div>
+    <!-- Final de página -->
+
+    <!-- Javascript -->
+    <script src="{% static 'core/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'core/js/popper.min.js' %}"></script>
+    <script src="{% static 'core/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'core//js/jquery.validate.min.js' %}"></script>
+    <script src="{% static 'core/js/custom.js' %}"></script>
+    <script src="{% static 'core/js/oms.min.js' %}"></script>
+    <script src="https://maps.google.com/maps/api/js?key=AIzaSyAH9-PsHlSCpKWPnDTM1FmJa9G6rDUCIHk" 
+    type="text/javascript"></script>
+        <!-- Se creo estos request para utilizar menos recursos en las páginas -->
+    {% if request.path == "/accounts/profile/" %}
+    <script src="{% static 'core/js/jquery.min.js' %}"></script>
+    <script src="{% static 'core/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'core/js/main.js' %}"></script>
+    {% endif %}
+    {% if request.path == "/recorridos/" %}
+        <script src="{% static 'core/js/jquery.magnific-popup.min.js' %}"></script>
+    {% endif %}
+    <script src="{% static 'core/js/owl.carousel.min.js' %}"></script>
+
+        <script src="{% static 'core/dropzone/dropzone.js' %}"></script>
+  </body>
+</html>

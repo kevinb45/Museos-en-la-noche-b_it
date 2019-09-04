@@ -1,0 +1,44 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Registro{% endblock %}
+{% block content %}
+    <main id="ts-main">
+        <!--PAGE TITLE
+            =========================================================================================================-->
+        <section id="page-title">
+            <div class="container">
+                <div class="ts-title">
+                    <h1>Registrarse</h1>
+                </div>
+            </div>
+        </section>
+
+        <!--LOGIN / REGISTER SECTION =========================================================================================================-->
+        <section id="login-register">
+            <div class="container">
+                <div class="row">
+                    <div class="offset-md-2 col-md-8 offset-lg-3 col-lg-6">
+
+                            <!--REGISTER TAB =====================================================================================-->
+                            <div class="tab-pane active" id="register" role="tabpanel" aria-labelledby="register-tab">
+                                <style>.errorlist{color:red;} label{display:none}</style> <!-- Con display none no aparen los labels -->
+                                <!--Register tab-->
+                                <form action="" method="post">{% csrf_token %}
+                                   {{form.as_p}}
+                                  
+                                    <!--Submit button-->
+                                    <button type="submit" class="btn btn-primary">Registrarme</button>
+                                </form>
+                            </div>
+                            <!--end #register.tab-pane-->
+                        </div>
+                        <!--end tab-content-->
+                    </div>
+                    <!--end offset-4.col-md-4-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end container-->
+        </section>
+    </main>
+    {% endblock %}

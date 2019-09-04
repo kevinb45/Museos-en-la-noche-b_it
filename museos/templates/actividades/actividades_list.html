@@ -1,0 +1,123 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Mis actividades{% endblock %}
+{% block content %}
+{% include 'museos/includes/museos_menu.html' %}
+<main role="main" id="ts-main">
+  <div class="container mb-4">
+    <div class="container ">
+      <div class="row ">
+        
+        <div class="col-md-6">
+            
+                    
+
+                    
+            {% if not actividades_list %}
+                    <h3>No tienes actividades cargadas</h3>
+                    <a class="btn btn-primary" href="{% url 'museos:createact' %}"><i>Crear Actividad</i></a>
+                {% else %} 
+                <a class="btn btn-primary" href="{% url 'museos:createact' %}"><i>Crear Actividad</i></a><br> <br>
+            {% endif %} 
+            
+            <section id="ts-items-list">
+                
+                {% for museo in actividades_list %}
+                <div class="card ts-item ts-item__list ts-card museos-item">
+                    
+                    
+                        {% if museo.active == 1 %}
+                        <div class="ts-ribbon-corner ">
+                                <span style="background: green">Activa</span>
+                        </div>
+                        {% else  %}
+                        <div class="ts-ribbon-corner ">
+                                <span style="background: red">Inactiva</span>
+                        </div>
+                        {% endif %} 
+                    <!--Card Body-->
+                    <div class="" style="padding:20px">
+
+
+                        <figure class="ts-item__info">
+                            <h4>{{museo.title}}</h4>
+                            <aside style="padding-top:5px;">
+                               <b> {{museo.content |title }}</b>
+                                <br>
+                                
+                                
+                            </aside>
+                        </figure>
+                        <div class="ts-description-lists">
+                            
+                            {% if museo.accesibilty %}
+                            <dl>
+                                <dt><i class="fa fa-wheelchair mr-2"></i>Accesibilidad</dt>
+                            </dl>   
+                            {% endif %} 
+                            
+                            {% if museo.opening_hour %}
+                            <dl>
+                                <dt><i class="fa fa-clock mr-2"></i>
+                                    {{museo.opening_hour}} a {{museo.close_hour}} hs</dt>
+                            </dl>
+                            {% endif %} 
+                            
+                        </div>
+                    </div>
+                    <!--Card Footer-->
+                    <div class="card-footer"  style="padding:5px 20px">
+                        {% if request.user.id == museo.author_id %}
+                            <a href="{% url 'museos:updateact' museo.id %}" style="padding-right:20px;">
+                                <span class="ts-btn-arrow">Editar</span>
+                            </a>
+                            <a href="{% url 'museos:deleteact' museo.id %}" style="padding-right:20px;">
+                                    <span class="ts-btn-arrow">Borrar</span>
+                            </a>
+                        {% elif request.user.is_superuser %}
+                            <a href="{% url 'museos:update' museo.id %}" style="padding-right:20px;">
+                                <span class="ts-btn-arrow">Editar</span>
+                            </a>
+                            <a href="{% url 'museos:delete' museo.id %}" style="padding-right:20px;">
+                                    <span class="ts-btn-arrow">Borrar</span>
+                            </a>
+                        {% endif %}
+                            
+
+                       <!-- <a href="#" style="padding-right:20px;">
+                            <span class="ts-btn-favoritos">Favorito</span>
+                        </a>-->
+                    </div>
+                    
+                </div>
+
+
+    {% endfor %}
+
+
+    </section>
+    {% if museo_list %}
+    <!--Pagination
+    <section id="pagination">
+            <div class="container">
+    
+                
+                <nav aria-label="Page navigation">
+                    <ul class="pagination ts-center__horizontal">
+                        <li class="page-item active">
+                            <a class="page-link" href="#">1</a>
+                        </li>
+                    </ul>
+                </nav>
+    
+            </div>
+        </section>-->
+    {% endif %} 
+
+    
+  </div>
+  </div>
+</main>
+<script src="{% static 'core/js/mapa-listado.js' %}"></script>
+
+{% endblock %}

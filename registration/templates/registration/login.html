@@ -1,0 +1,84 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Iniciar sesión{% endblock %}
+{% block content %}
+    <main id="ts-main">
+
+        <!--PAGE TITLE
+            =========================================================================================================-->
+        <section id="page-title">
+            <div class="container">
+                <div class="ts-title">
+                    <h1>Iniciar sesión</h1>
+                </div>
+            </div>
+        </section>
+
+        <!--LOGIN / REGISTER SECTION
+            =========================================================================================================-->
+        <section id="login-register">
+            <div class="container">
+                <div class="row">
+
+                    <div class="offset-md-2 col-md-8 offset-lg-3 col-lg-6">
+
+                        <!--TAB CONTENT
+                            =========================================================================================-->
+                        <div class="tab-content">
+
+                            <!--LOGIN TAB
+                                =====================================================================================-->
+                            <div class="tab-pane active" id="login" role="tabpanel" aria-labelledby="login-tab">
+                                <!-- Se compurteba si el registro se hizo bien -->
+                                {% if 'register' in request.GET %}
+                                    <p style="color:green;">Usuario creado correctamente, ya puedes identificarte.</p>
+                                {% endif %}
+                                <!--Login form-->
+                                <form class="ts-form" id="form-login" action="" method="post">{% csrf_token %}
+
+                                    <!--Email-->
+                                    <div class="form-group">
+                                         <input type="text" name="username" autofocus maxlength="254" required
+                                            id="id_username" class="form-control" placeholder="Nombre de usuario"/>
+                                    </div>
+
+                                    <!--Password-->
+                                    <div class="input-group ts-has-password-toggle">
+                                        <input type="password" name="password" required
+                                        id="id_password" class="form-control" placeholder="Contraseña"/>
+                                        <div class="input-group-append">
+                                            <a href="#" class="input-group-text bg-white border-left-0 ts-password-toggle">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <!--Checkbox and Submit button-->
+                                    <div class="ts-center__vertical justify-content-between">
+
+                                        <!--Remember checkbox
+                                        <div class="custom-control custom-checkbox mb-0">
+                                            <input type="checkbox" class="custom-control-input" id="login-check">
+                                            <label class="custom-control-label" for="login-check">Recordarme</label>
+                                        </div>
+                                            -->
+                                        <!--Submit button-->
+                                        <button type="submit" class="btn btn-primary" value="Acceder">Acceder</button>
+
+                                    </div>
+                                    <hr>
+                                    <!--Forgot password link-->
+                                    <a href="{% url 'password_reset' %}" class="ts-text-small">
+                                        <i class="fa fa-sync-alt ts-text-color-primary mr-2"></i>
+                                        <span class="ts-text-color-light">Olvide mi contraseña</span>
+                                    </a>
+                                    {% if form.non_field_errors %}
+                                        <p style="color:red">Usuario o contraseña incorrectos, prueba de nuevo.</p>
+                                    {% endif %}
+                                </form>
+                            </div>
+                            <!--end #login.tab-pane-->       
+        </section>
+    </main>
+{% endblock %}
+    
